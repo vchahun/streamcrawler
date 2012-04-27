@@ -10,10 +10,14 @@ class StreamSpider(CrawlSpider):
     name = 'streamspider'
 
     def start_requests(self):
+        self.block = False
         for i in count():
+            while self.block:
+                time.sleep(5)
             log.msg('Generated item')
-            yield Request('http://www.example.com/?q=%d' % i)
-            time.sleep(5)
+            yield Request('http://www.google.com/?q=%d' % i)
+            self.block = True
 
-    def parse_item(self, response):
+    def parse(self, response):
         log.msg('Retrieved item %s' % response.url)
+        self.block = False
